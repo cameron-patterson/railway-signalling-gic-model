@@ -499,7 +499,7 @@ def model_refactor(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=Non
     #blocks = np.full(3, 1.0)
     print(f'Number of blocks: {len(blocks)}')
     bearings = data['bearings']  # Block bearings (radians); Note: zero is directly northwards, with positive values increasing clockwise
-    #bearings = np.full(3, np.deg2rad(90))
+   # bearings = np.array([np.deg2rad(90), np.deg2rad(85), np.deg2rad(95)])
     blocks_sum = np.cumsum(blocks)  # Cumulative sum of block lengths (km)
 
     # Identify the electric field components (ex and ey) inputs and setup accordingly
@@ -526,7 +526,7 @@ def model_refactor(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=Non
     elif isinstance(y_trac, (list, tuple, np.ndarray)) and len(y_trac) == 1:  # If input is a list, tuple, or numpy array but there is only a single value within
         y_trac_block = np.full(len(blocks), y_trac[0], dtype=float)  # Extract and set each block to that value and ensure float type
     elif isinstance(y_trac, (list, tuple, np.ndarray)) and len(y_trac) == len(blocks):  # If input is a list, tuple, or numpy array and the length matches the number of blocks
-        y_trac_block = y_trac.astype(float)  # Set to those values and ensure float type
+        y_trac_block = np.asarray(y_trac, dtype=float)  # Set to those values and ensure float type
     else:  # If traction rail leakage is incorrectly specified
         raise ValueError('Check traction rail leakage (y_trac) inputs.')  # Raise error
 
@@ -539,7 +539,7 @@ def model_refactor(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=Non
     elif isinstance(y_sig, (list, tuple, np.ndarray)) and len(y_sig) == 1:  # If input is a list, tuple, or numpy array but there is only a single value within
         y_sig_block = np.full(len(blocks), y_sig[0], dtype=float)  # Extract and set each block to that value and ensure float type
     elif isinstance(y_sig, (list, tuple, np.ndarray)) and len(y_sig) == len(blocks):  # If input is a list, tuple, or numpy array and the length matches the number of blocks
-        y_sig_block = y_sig.astype(float)  # Set to those values and ensure float type
+        y_sig_block = np.asarray(y_trac, dtype=float)  # Set to those values and ensure float type
     else:  # If signal rail leakage is incorrectly specified
         raise ValueError('Check signal rail leakage (y_sig) inputs.')  # Raise error
 
@@ -552,12 +552,6 @@ def model_refactor(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=Non
         overlap_locs = np.where(np.isin(axle_pos_b, blocks_sum))[0]
         axle_pos_b = np.delete(axle_pos_b, overlap_locs)
         print("An axle overlapped with an IRJ and was ignored")
-
-    # Error if cross bonds overlap with block boundaries
-    # if 0 in trac_sub_blocks_a or 0 in trac_sub_blocks_b:
-    #     raise Exception('Crossbond overlaps with block boundary')
-    # else:
-    #     pass
 
     # Calculate the electrical characteristics of the rails
     gamma_trac_block = np.sqrt(z_trac * y_trac_block)  # Traction rail propagation constant
@@ -649,30 +643,28 @@ def model_refactor(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=Non
     n_nodes_b = len(yg_trac_nodal_b) + len(yg_sig_nodal_b)
     n_nodes_trac_b = len(yg_trac_nodal_b)
     n_nodes_sig_b = len(yg_sig_nodal_b)
-    n_nodes = n_nodes_a + n_nodes_b  # Number of nodes in the whole network
+    # Calculate number of nodes in the whole network
+    n_nodes = n_nodes_a + n_nodes_b  # Total nodes in network
 
-    # Index of rail nodes in the rails
-    node_locs_trac_a = np.arange(0, n_nodes_trac_a, 1).astype(int)
-    node_locs_sig_a = np.arange(n_nodes_trac_a, n_nodes_a, 1).astype(int)
-    node_locs_trac_b = np.arange(n_nodes_a, n_nodes_a + n_nodes_trac_b, 1).astype(int)
-    node_locs_sig_b = np.arange(n_nodes_a + n_nodes_trac_b, n_nodes).astype(int)
-    # Index of cross bond nodes
-    node_locs_cb_a = node_locs_trac_a[np.where(np.isin(trac_sub_block_sum_a, pos_cb))[0]]
-    node_locs_cb_b = node_locs_trac_b[np.where(np.isin(trac_sub_block_sum_b, pos_cb))[0]]
-    # Index of axle nodes
-    node_locs_axle_trac_a = node_locs_trac_a[np.where(np.isin(trac_sub_block_sum_a, axle_pos_a))[0]]
-    node_locs_axle_sig_a = node_locs_sig_a[np.where(np.isin(sig_sub_block_sum_a, axle_pos_a))[0]]
-    node_locs_axle_trac_b = node_locs_trac_b[np.where(np.isin(trac_sub_block_sum_b, axle_pos_b))[0]]
-    node_locs_axle_sig_b = node_locs_sig_b[np.where(np.isin(sig_sub_block_sum_b, axle_pos_b))[0]]
-    # Index of traction rail power supply and relay nodes
+    # Set up node indices
+    node_locs_trac_a = np.arange(0, n_nodes_trac_a, 1).astype(int)  # Traction rail nodes
+    node_locs_sig_a = np.arange(n_nodes_trac_a, n_nodes_a, 1).astype(int)  # Signal rail nodes
+    node_locs_cb_a = node_locs_trac_a[np.where(np.isin(trac_sub_block_sum_a, pos_cb))[0]]  # Cross bond nodes
+    node_locs_axle_trac_a = node_locs_trac_a[np.where(np.isin(trac_sub_block_sum_a, axle_pos_a))[0]]  # Axle traction rail nodes
+    node_locs_axle_sig_a = node_locs_sig_a[np.where(np.isin(sig_sub_block_sum_a, axle_pos_a))[0]]  # Axle signal rail nodes
     block_nodes_trac_a = node_locs_trac_a[np.isin(trac_sub_block_sum_a, np.concatenate(([0.0], blocks_sum)))]  # All nodes at block ends
-    node_locs_power_trac_a = block_nodes_trac_a[1:]  # Traction rail middle nodes share a connection to both a power supply and a relay, so use [1:]
-    node_locs_relay_trac_a = block_nodes_trac_a[:-1]
+    node_locs_power_trac_a = block_nodes_trac_a[1:]  # Traction rail power supply nodes. Traction rail middle nodes share a connection to both a power supply and a relay, so use [1:]
+    node_locs_relay_trac_a = block_nodes_trac_a[:-1]  # Traction rail relay nodes. Traction rail middle nodes share a connection to both a power supply and a relay, so use [1:]
     block_nodes_sig_a = node_locs_sig_a[np.isin(sig_sub_block_sum_a, np.concatenate(([0.0], blocks_sum)))]  # All nodes at block ends
-    node_locs_power_sig_a = block_nodes_sig_a[1::2]  # Signal rails are separated by IRJs, so use [1::2]
-    node_locs_relay_sig_a = block_nodes_sig_a[::2]
+    node_locs_power_sig_a = block_nodes_sig_a[1::2]  # Signal rail power supply nodes. Signal rails are separated by IRJs, so use [1::2]
+    node_locs_relay_sig_a = block_nodes_sig_a[::2]  # Signal rail relay nodes. Signal rails are separated by IRJs, so use [1::2]
     # Repeat for opposite track
     # Note: Relays are position on the side of the block the trains enter from, so the ordering is reversed for the opposite track
+    node_locs_trac_b = np.arange(n_nodes_a, n_nodes_a + n_nodes_trac_b, 1).astype(int)
+    node_locs_sig_b = np.arange(n_nodes_a + n_nodes_trac_b, n_nodes).astype(int)
+    node_locs_cb_b = node_locs_trac_b[np.where(np.isin(trac_sub_block_sum_b, pos_cb))[0]]
+    node_locs_axle_trac_b = node_locs_trac_b[np.where(np.isin(trac_sub_block_sum_b, axle_pos_b))[0]]
+    node_locs_axle_sig_b = node_locs_sig_b[np.where(np.isin(sig_sub_block_sum_b, axle_pos_b))[0]]
     block_nodes_trac_b = node_locs_trac_b[np.isin(trac_sub_block_sum_b, np.concatenate(([0.0], blocks_sum)))]
     node_locs_power_trac_b = block_nodes_trac_b[:-1]
     node_locs_relay_trac_b = block_nodes_trac_b[1:]
@@ -680,8 +672,8 @@ def model_refactor(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=Non
     node_locs_power_sig_b = block_nodes_sig_b[::2]
     node_locs_relay_sig_b = block_nodes_sig_b[1::2]
 
-    # Build nodal admittance matrix
-    Y = np.zeros((n_nodes, n_nodes))  # Set default matrix to size, filled with zeroes
+    # NODAL ADMITTANCE MATRIX
+    Y = np.zeros((n_nodes, n_nodes))  # Set default nodal admittance matrix to size, filled with zeroes
     # Use stamps to add to different indices of the nodal admittance matrix
     stamp_series_admittance(Y, node_locs_trac_a[:-1], node_locs_trac_a[1:], ye_trac_a)  # Traction rail series admittances
     stamp_series_admittance(Y, node_locs_sig_a[:-1], node_locs_sig_a[1:], ye_sig_a)  # Signal rail series admittances
@@ -690,9 +682,7 @@ def model_refactor(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=Non
     stamp_series_admittance(Y, node_locs_axle_trac_a, node_locs_axle_sig_a, y_relay)  # Axle series admittances
     stamp_parallel_admittance(Y, node_locs_trac_a, yg_trac_nodal_a)  # Traction rail parallel admittances
     stamp_parallel_admittance(Y, node_locs_sig_a, yg_sig_nodal_a)  # Signal rail parallel admittances
-    stamp_series_admittance(Y, node_locs_cb_a, node_locs_cb_b, y_cb)  # Cross bond admittances
     # Repeat for opposite track
-    # Note: Cross bonds only need to be added once as they connect both tracks
     stamp_series_admittance(Y, node_locs_trac_b[:-1], node_locs_trac_b[1:], ye_trac_b)
     stamp_series_admittance(Y, node_locs_sig_b[:-1], node_locs_sig_b[1:], ye_sig_b)
     stamp_series_admittance(Y, node_locs_relay_trac_b, node_locs_relay_sig_b, y_relay)
@@ -700,151 +690,54 @@ def model_refactor(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=Non
     stamp_series_admittance(Y, node_locs_axle_trac_b, node_locs_axle_sig_b, y_relay)
     stamp_parallel_admittance(Y, node_locs_trac_b, yg_trac_nodal_b)
     stamp_parallel_admittance(Y, node_locs_sig_b, yg_sig_nodal_b)
+    # Note: Cross bonds only need to be added once as they connect both tracks
+    stamp_series_admittance(Y, node_locs_cb_a, node_locs_cb_b, y_cb)  # Cross bond admittances
 
-    # Restructure angles array based on the new sub blocks
-    locs_relay_sig_a = np.where(np.isin(node_locs_sig_a, node_locs_relay_sig_a))[0]
-    locs_power_sig_b = np.where(np.isin(node_locs_sig_b, node_locs_power_sig_b))[0]
-    bearings_a = bearings
-    bearings_b = (bearings + np.pi) % (2*np.pi)
-    block_indices_trac_a = np.searchsorted(blocks_sum, np.delete(trac_sub_block_sum_a, 0, 0))
-    trac_sub_blocks_angles_a = bearings_a[block_indices_trac_a]
-    trac_sub_blocks_ex_a = ex_blocks[block_indices_trac_a]
-    trac_sub_blocks_ey_a = ey_blocks[block_indices_trac_a]
-    block_indices_sig_a = np.searchsorted(blocks_sum, np.delete(sig_sub_block_sum_a, locs_relay_sig_a))
-    sig_sub_block_angles_a = bearings_a[block_indices_sig_a]
-    sig_sub_blocks_ex_a = ex_blocks[block_indices_sig_a]
-    sig_sub_blocks_ey_a = ey_blocks[block_indices_sig_a]
-    block_indices_trac_b = np.searchsorted(blocks_sum, np.delete(trac_sub_block_sum_b, 0, 0))
-    trac_sub_blocks_angles_b = bearings_b[block_indices_trac_b]
-    trac_sub_blocks_ex_b = ex_blocks[block_indices_trac_b]
-    trac_sub_blocks_ey_b = ey_blocks[block_indices_trac_b]
-    block_indices_sig_b = np.searchsorted(blocks_sum, np.delete(sig_sub_block_sum_b, locs_power_sig_b))
-    sig_sub_block_angles_b = bearings_b[block_indices_sig_b]
-    sig_sub_blocks_ex_b = ex_blocks[block_indices_sig_b]
-    sig_sub_blocks_ey_b = ey_blocks[block_indices_sig_b]
+    # ELECTRIC FIELD
+    # Calculate electric field parallel to blocks
+    bearings = bearings[:, np.newaxis]
+    e_parallel = ex_blocks * np.cos(bearings) + ey_blocks * np.sin(bearings)
+    # Restructure parallel electric field array to fit the sub blocks structure
+    block_idx = np.searchsorted(blocks_sum, np.cumsum(trac_sub_blocks_a))  # Indices of the blocks that the traction rail sub blocks are in
+    e_parallel_trac_sub_block_a = e_parallel[block_idx, :]  # Maps block values onto traction rail sub blocks for parallel electric field
+    block_idx = np.searchsorted(blocks_sum, np.nancumsum(sig_sub_blocks_a))
+    e_parallel_sig_sub_block_a = e_parallel[block_idx, :]  # Maps block values onto signal rail sub blocks for parallel electric field
+    e_parallel_sig_sub_block_a[np.isnan(sig_sub_blocks_a)] = 0  # Set electric field at IRJs to zero as it is useful for later calculations
+    # Repeat for opposite track
+    block_idx = np.searchsorted(blocks_sum, np.cumsum(trac_sub_blocks_b))
+    e_parallel_trac_sub_block_b = e_parallel[block_idx, :]
+    block_idx = np.searchsorted(blocks_sum, np.nancumsum(sig_sub_blocks_b))
+    e_parallel_sig_sub_block_b = e_parallel[block_idx, :]  # Maps block values onto signal rail sub blocks for parallel electric field
+    e_parallel_sig_sub_block_b[np.isnan(sig_sub_blocks_b)] = 0  # Set electric field at IRJs to zero as it is useful for later calculations
 
-    # Currents
+    # CURRENTS
+    # Calculate current sources due to electric field
+    i_trac_sub_block_a = e_parallel_trac_sub_block_a / z_trac  # Current sources along traction rail
+    i_sig_sub_block_a = e_parallel_sig_sub_block_a / z_sig  # Current sources along signal rail
+    # Repeat for opposite track
+    i_trac_sub_block_b = e_parallel_trac_sub_block_b / z_trac
+    i_sig_sub_block_b = e_parallel_sig_sub_block_b / z_sig
+
     # Set up current matrix
-    J = np.zeros([len(ex_blocks[0, :]), n_nodes])
+    J = np.zeros([n_nodes, len(ex_blocks[0, :])])  # Set default current matrix to size, filled with zeroes
 
-    # 'a' first
-    trac_sb_angles_a_broadcasted = trac_sub_blocks_angles_a[:, np.newaxis]
-    e_x_par_trac_a = trac_sub_blocks_ex_a * np.cos(trac_sb_angles_a_broadcasted)
-    e_x_par_trac_a = e_x_par_trac_a.T
-    e_y_par_trac_a = trac_sub_blocks_ey_a * np.sin(trac_sb_angles_a_broadcasted)
-    e_y_par_trac_a = e_y_par_trac_a.T
-    e_par_trac_a = e_x_par_trac_a + e_y_par_trac_a
-    sig_sb_angles_a_broadcasted = sig_sub_block_angles_a[:, np.newaxis]
-    e_x_par_sig_a = sig_sub_blocks_ex_a * np.cos(sig_sb_angles_a_broadcasted)
-    e_x_par_sig_a = e_x_par_sig_a.T
-    e_y_par_sig_a = sig_sub_blocks_ey_a * np.sin(sig_sb_angles_a_broadcasted)
-    e_y_par_sig_a = e_y_par_sig_a.T
-    e_par_sig_a = e_x_par_sig_a + e_y_par_sig_a
-    i_sig_a = e_par_sig_a / z_sig
-    i_trac_a = e_par_trac_a / z_trac
-
-    # 'b' second
-    trac_sb_angles_b_broadcasted = trac_sub_blocks_angles_b[:, np.newaxis]
-    e_x_par_trac_b = trac_sub_blocks_ex_b * np.cos(trac_sb_angles_b_broadcasted)
-    e_x_par_trac_b = e_x_par_trac_b.T
-    e_y_par_trac_b = trac_sub_blocks_ey_b * np.sin(trac_sb_angles_b_broadcasted)
-    e_y_par_trac_b = e_y_par_trac_b.T
-    e_par_trac_b = e_x_par_trac_b + e_y_par_trac_b
-    sig_sb_angles_b_broadcasted = sig_sub_block_angles_b[:, np.newaxis]
-    e_x_par_sig_b = sig_sub_blocks_ex_b * np.cos(sig_sb_angles_b_broadcasted)
-    e_x_par_sig_b = e_x_par_sig_b.T
-    e_y_par_sig_b = sig_sub_blocks_ey_b * np.sin(sig_sb_angles_b_broadcasted)
-    e_y_par_sig_b = e_y_par_sig_b.T
-    e_par_sig_b = e_x_par_sig_b + e_y_par_sig_b
-    i_sig_b = e_par_sig_b / z_sig
-    i_trac_b = e_par_trac_b / z_trac
-
-    # 'a' first
-    # Traction rail first node
-    J[:, node_locs_trac_a[0]] = -i_trac_a[:, 0]
-    # Traction rail centre nodes
-    # Cross bond nodes
-    mask = np.isin(node_locs_trac_a, node_locs_cb_a)
-    indices = np.where(mask)[0]
-    J[:, node_locs_cb_a] = i_trac_a[:, indices - 1] - i_trac_a[:, indices]
-    # Axle nodes
-    mask = np.isin(node_locs_trac_a, node_locs_axle_trac_a)
-    indices = np.where(mask)[0]
-    J[:, node_locs_axle_trac_a] = i_trac_a[:, indices - 1] - i_trac_a[:, indices]
-    # Non-cross bond or axle nodes
-    mask = np.isin(node_locs_trac_a, node_locs_cb_a) | np.isin(node_locs_trac_a, node_locs_axle_trac_a)
-    indices = np.where(~mask)[0][1:-1]
-    mask_del = ~np.isin(node_locs_trac_a, node_locs_cb_a) & ~np.isin(node_locs_trac_a, node_locs_axle_trac_a)
-    non_cb_axle_node_locs_centre_a = node_locs_trac_a[mask_del][1:-1]
-    J[:, non_cb_axle_node_locs_centre_a] = i_trac_a[:, indices - 1] - i_trac_a[:, indices] - i_power
-    # Traction rail last node
-    J[:, node_locs_trac_a[-1]] = i_trac_a[:, -1] - i_power
-
-    # Signal rail nodes
-    sig_relay_axle = node_locs_sig_a[np.where(~np.isin(node_locs_sig_a, node_locs_power_sig_a))[0]]
-    split_blocks = np.unique(np.sort(np.append(np.where(np.isin(sig_relay_axle, node_locs_axle_sig_a))[0], np.where(np.isin(sig_relay_axle, node_locs_axle_sig_a))[0] - 1)))
-    all_blocks = range(0, len(i_sig_a[0]))
-    whole_blocks = np.where(~np.isin(all_blocks, split_blocks))[0]
-    whole_blocks_start = sig_relay_axle[whole_blocks]
-    whole_blocks_end = whole_blocks_start + 1
-    split_blocks_start = sig_relay_axle[np.where(~np.isin(sig_relay_axle, node_locs_axle_sig_a) & ~np.isin(sig_relay_axle, whole_blocks_start))[0]]
-    split_blocks_end = np.delete(node_locs_power_sig_a, np.where(np.isin(node_locs_power_sig_a, whole_blocks_end)))
-    split_blocks_mid = sig_relay_axle[np.where(np.isin(sig_relay_axle, node_locs_axle_sig_a))[0]]
-    J[:, node_locs_sig_a[np.where(np.isin(node_locs_sig_a, whole_blocks_start))[0]]] = -i_sig_a[:, whole_blocks]
-    J[:, node_locs_sig_a[np.where(np.isin(node_locs_sig_a, whole_blocks_end))[0]]] = i_sig_a[:, whole_blocks] + i_power
-    J[:, node_locs_sig_a[np.where(np.isin(node_locs_sig_a, split_blocks_start))[0]]] = -i_sig_a[:, np.where(np.isin(sig_relay_axle, split_blocks_start))[0]]
-    J[:, node_locs_sig_a[np.where(np.isin(node_locs_sig_a, split_blocks_end))[0]]] = i_sig_a[:, split_blocks[np.where(~np.isin(split_blocks, np.where(np.isin(sig_relay_axle, split_blocks_mid))[0] - 1))[0]]] + i_power
-    J[:, node_locs_sig_a[np.where(np.isin(node_locs_sig_a, split_blocks_mid))[0]]] = i_sig_a[:, np.where(np.isin(sig_relay_axle, split_blocks_mid))[0] - 1] - i_sig_a[:, np.where(np.isin(sig_relay_axle, split_blocks_mid))[0]]
-    # 'b' second
-    # Traction rail first node
-    J[:, node_locs_trac_b[0]] = i_trac_b[:, 0] - i_power
-    # Traction rail centre nodes
-    # Cross bond nodes
-    mask = np.isin(node_locs_trac_b, node_locs_cb_b)
-    indices = np.where(mask)[0]
-    J[:, node_locs_cb_b] = i_trac_b[:, indices] - i_trac_b[:, indices - 1]
-    # Axle nodes
-    mask = np.isin(node_locs_trac_b, node_locs_axle_trac_b)
-    indices = np.where(mask)[0]
-    J[:, node_locs_axle_trac_b] = i_trac_b[:, indices] - i_trac_b[:, indices - 1]
-    # Non-cross bond or axle nodes
-    mask = np.isin(node_locs_trac_b, node_locs_cb_b) | np.isin(node_locs_trac_b, node_locs_axle_trac_b)
-    indices = np.where(~mask)[0][1:-1]
-    mask_del = ~np.isin(node_locs_trac_b, node_locs_cb_b) & ~np.isin(node_locs_trac_b, node_locs_axle_trac_b)
-    non_cb_axle_node_locs_centre_b = node_locs_trac_b[mask_del][1:-1]
-    J[:, non_cb_axle_node_locs_centre_b] = i_trac_b[:, indices] - i_trac_b[:, indices - 1] - i_power
-    # Traction rail last node
-    J[:, node_locs_trac_b[-1]] = -i_trac_b[:, -1]
-
-    # Signal rail nodes
-    sig_power_axle = node_locs_sig_b[np.where(~np.isin(node_locs_sig_b, node_locs_relay_sig_b))[0]]
-    split_blocks = np.unique(np.sort(np.append(np.where(np.isin(sig_power_axle, node_locs_axle_sig_b))[0], np.where(np.isin(sig_power_axle, node_locs_axle_sig_b))[0] - 1)))
-    all_blocks = range(0, len(i_sig_b[0]))
-    whole_blocks = np.where(~np.isin(all_blocks, split_blocks))[0]
-    whole_blocks_start = sig_power_axle[whole_blocks]
-    whole_blocks_end = whole_blocks_start + 1
-    split_blocks_start = sig_power_axle[np.where(~np.isin(sig_power_axle, node_locs_axle_sig_b) & ~np.isin(sig_power_axle, whole_blocks_start))[0]]
-    split_blocks_end = np.delete(node_locs_relay_sig_b, np.where(np.isin(node_locs_relay_sig_b, whole_blocks_end)))
-    split_blocks_mid = sig_power_axle[np.where(np.isin(sig_power_axle, node_locs_axle_sig_b))[0]]
-    J[:, node_locs_sig_b[np.where(np.isin(node_locs_sig_b, whole_blocks_start))[0]]] = i_sig_b[:, whole_blocks] + i_power
-    J[:, node_locs_sig_b[np.where(np.isin(node_locs_sig_b, whole_blocks_end))[0]]] = -i_sig_b[:, whole_blocks]
-    J[:, node_locs_sig_b[np.where(np.isin(node_locs_sig_b, split_blocks_start))[0]]] = i_sig_b[:, np.where(np.isin(sig_power_axle, split_blocks_start))[0]] + i_power
-    J[:, node_locs_sig_b[np.where(np.isin(node_locs_sig_b, split_blocks_end))[0]]] = -i_sig_b[:, split_blocks[np.where(~np.isin(split_blocks, np.where(np.isin(sig_power_axle, split_blocks_mid))[0] - 1))[0]]]
-    J[:, node_locs_sig_b[np.where(np.isin(node_locs_sig_b, split_blocks_mid))[0]]] = -i_sig_b[:, np.where(np.isin(sig_power_axle, split_blocks_mid))[0] - 1] + i_sig_b[:, np.where(np.isin(sig_power_axle, split_blocks_mid))[0]]
-
-    # Electrically stagger the power supplies
+    # Use stamps to add to different indices of the current matrix
+    stamp_current_source(J, node_locs_trac_a[:-1], node_locs_trac_a[1:], i_trac_sub_block_a)  # Fill current sources along traction rail
+    stamp_current_source(J, node_locs_sig_a[:-1], node_locs_sig_a[1:], i_sig_sub_block_a)  # Fill current sources along signal rail
+    # Note: For electrical staggering the polarity of power supply current sources every other block must be reversed
     if electrical_staggering:
-        node_locs_power_trac_a_down = node_locs_power_trac_a[1::2]
-        node_locs_power_sig_a_down = node_locs_power_sig_a[1::2]
-        node_locs_power_trac_b_down = np.flip(np.flip(node_locs_power_trac_b)[1::2])
-        node_locs_power_sig_b_down = np.flip(np.flip(node_locs_power_sig_b)[1::2])
-        J[:, node_locs_power_trac_a_down] = J[:, node_locs_power_trac_a_down] + (2 * i_power)
-        J[:, node_locs_power_sig_a_down] = J[:, node_locs_power_sig_a_down] - (2 * i_power)
-        J[:, node_locs_power_trac_b_down] = J[:, node_locs_power_trac_b_down] + (2 * i_power)
-        J[:, node_locs_power_sig_b_down] = J[:, node_locs_power_sig_b_down] - (2 * i_power)
+        stamp_current_source(J, node_locs_power_trac_a[0::2], node_locs_power_sig_a[0::2], i_power)  # Fill half of power supply current sources
+        stamp_current_source(J, node_locs_power_trac_a[1::2], node_locs_power_sig_a[1::2], -i_power)  # Fill other half of power supply current sources
     else:
-        pass
-    J = J.T
+        stamp_current_source(J, node_locs_power_trac_a, node_locs_power_sig_a, i_power)
+    # Repeat for opposite track
+    stamp_current_source(J, node_locs_trac_b[:-1], node_locs_trac_b[1:], i_trac_sub_block_b)
+    stamp_current_source(J, node_locs_sig_b[:-1], node_locs_sig_b[1:], i_sig_sub_block_b)
+    if electrical_staggering:
+        stamp_current_source(J, node_locs_power_trac_b[0::2], node_locs_power_sig_b[0::2], i_power)
+        stamp_current_source(J, node_locs_power_trac_b[1::2], node_locs_power_sig_b[1::2], -i_power)
+    else:
+        stamp_current_source(J, node_locs_power_trac_b, node_locs_power_sig_b, i_power)
 
     # Sparse matrix
     y_csc = csr_matrix(Y).tocsc()
@@ -888,6 +781,11 @@ def stamp_parallel_admittance(Matrix, i, admittance):
     Matrix[i, i] += admittance
 
 
+def stamp_current_source(Matrix, i, j, current_source):
+    Matrix[i] -= current_source
+    Matrix[j] += current_source
+
+
 def test_model():
     bearings = np.deg2rad(np.arange(0, 360, 5))
     e_values = np.linspace(0, 20, 2001)
@@ -896,10 +794,13 @@ def test_model():
     for i in range(0, len(bearings)):
         ex_all[i] = e_values * np.cos(bearings[i])
         ey_all[i] = e_values * np.sin(bearings[i])
-
-    outputs = model_refactor(section_name='glasgow_edinburgh_falkirk', ex_uniform=np.array([10]), ey_uniform=np.array([10]), axle_pos_a=np.array([]), axle_pos_b=([]), y_trac=1.6)
+    #outputs = model_refactor(section_name='glasgow_edinburgh_falkirk', ex_blocks=np.array([[0, 1], [2, 3], [4, 5]]), ey_blocks=np.array([[0, 1], [2, 3], [4, 5]]), axle_pos_a=np.array([2.1]), axle_pos_b=([0.8]), y_trac=[1.6, 1.5, 1.4], y_sig=[0.1, 0.15, 0.075])
+    outputs = model_refactor(section_name='east_coast_main_line', ex_uniform=np.array([0]), ey_uniform=np.array([0]), axle_pos_a=np.array([]), axle_pos_b=([]), y_trac=1.6, electrical_staggering=False)
+    outputs2 = model_refactor(section_name='east_coast_main_line', ex_uniform=np.array([0]), ey_uniform=np.array([0]), axle_pos_a=np.array([]), axle_pos_b=([]), electrical_staggering=False)
     i = outputs['i_relays_a']
-    plt.plot(i, '.')
+    i2 = outputs2['i_relays_a']
+    plt.plot(i, 'x')
+    plt.plot(i2, '.')
     plt.axhline(0.055, color='red')
     plt.axhline(-0.055, color='red')
     plt.show()
