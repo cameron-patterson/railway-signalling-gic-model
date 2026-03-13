@@ -17,7 +17,6 @@ def save_currents_all_e_rs(section):
         output = model(section_name=section, ex_uni=ex_uni, ey_uni=ey_uni, y_trac=1.6)
         currents_all_e[i] = output['i_relays_a']
         print(i)
-    np.save(f'currents_all_e_{section}_rs', currents_all_e)
 
 
 def calculate_thresholds_rs(section):

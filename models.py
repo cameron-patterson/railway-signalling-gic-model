@@ -45,7 +45,6 @@ def model(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=None, ey_blo
     elif e_uni_given and ex_blocks is None and ey_blocks is None:  # If only both uniform components  are given
         ex_blocks = np.full((len(blocks), len(ex_uniform)), ex_uniform, dtype=float)  # Set the electric field component value for each block to the uniform value
         ey_blocks = np.full((len(blocks), len(ey_uniform)), ey_uniform, dtype=float)
-        ey_blocks = np.full((len(blocks), len(ey_uniform)), ey_uniform, dtype=float)
     else:  # If inputs are mixed or incomplete
         raise ValueError("You must provide either (ex_blocks and ey_blocks) OR (ex_par and ey_par) exclusively.")  # Raise error
 
@@ -213,7 +212,7 @@ def model(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=None, ey_blo
     stamp_series_admittance(Y, node_locs_sig_a[:-1], node_locs_sig_a[1:], ye_sig_a)  # Signal rail series admittances
     stamp_series_admittance(Y, node_locs_relay_trac_a, node_locs_relay_sig_a, y_relay)  # Relay series admittances
     stamp_series_admittance(Y, node_locs_power_trac_a, node_locs_power_sig_a, y_power)  # Power supply series admittances
-    stamp_series_admittance(Y, node_locs_axle_trac_a, node_locs_axle_sig_a, y_relay)  # Axle series admittances
+    stamp_series_admittance(Y, node_locs_axle_trac_a, node_locs_axle_sig_a, y_axle)  # Axle series admittances
     stamp_parallel_admittance(Y, node_locs_trac_a, yg_trac_nodal_a)  # Traction rail parallel admittances
     stamp_parallel_admittance(Y, node_locs_sig_a, yg_sig_nodal_a)  # Signal rail parallel admittances
     # Repeat for opposite track
@@ -221,7 +220,7 @@ def model(section_name, axle_pos_a=None, axle_pos_b=None, ex_blocks=None, ey_blo
     stamp_series_admittance(Y, node_locs_sig_b[:-1], node_locs_sig_b[1:], ye_sig_b)
     stamp_series_admittance(Y, node_locs_relay_trac_b, node_locs_relay_sig_b, y_relay)
     stamp_series_admittance(Y, node_locs_power_trac_b, node_locs_power_sig_b, y_power)
-    stamp_series_admittance(Y, node_locs_axle_trac_b, node_locs_axle_sig_b, y_relay)
+    stamp_series_admittance(Y, node_locs_axle_trac_b, node_locs_axle_sig_b, y_axle)
     stamp_parallel_admittance(Y, node_locs_trac_b, yg_trac_nodal_b)
     stamp_parallel_admittance(Y, node_locs_sig_b, yg_sig_nodal_b)
     # Note: Cross bonds only need to be added once as they connect both tracks
