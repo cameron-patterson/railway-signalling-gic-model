@@ -1,0 +1,1433 @@
+{
+  "type": "FeatureCollection",
+  "generator": "overpass-turbo",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL.",
+  "timestamp": "2024-07-03T08:54:00Z",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/3049056590",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG22",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.072158,
+          55.943779
+        ]
+      },
+      "id": "node/3049056590"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504425",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG8",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.9713707,
+          55.9809425
+        ]
+      },
+      "id": "node/11913504425"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504427",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG4",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.9520049,
+          55.981296
+        ]
+      },
+      "id": "node/11913504427"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504431",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EPJ516",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7054792,
+          55.9837667
+        ]
+      },
+      "id": "node/11913504431"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504435",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EPJ504",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7491697,
+          55.9842854
+        ]
+      },
+      "id": "node/11913504435"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504436",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EGJ384",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7713274,
+          55.9841616
+        ]
+      },
+      "id": "node/11913504436"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504439",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EGJ382",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7907094,
+          55.9911427
+        ]
+      },
+      "id": "node/11913504439"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504440",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EGJ378",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.8130755,
+          55.9943217
+        ]
+      },
+      "id": "node/11913504440"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504443",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EGJ372",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.8371328,
+          55.9962398
+        ]
+      },
+      "id": "node/11913504443"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504444",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EGJ362",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.8564006,
+          55.9959404
+        ]
+      },
+      "id": "node/11913504444"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504446",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EGJ358",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.8744872,
+          55.9926379
+        ]
+      },
+      "id": "node/11913504446"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504451",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG2",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.9302445,
+          55.9827692
+        ]
+      },
+      "id": "node/11913504451"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504453",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "GJ336",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.914346,
+          55.9841105
+        ]
+      },
+      "id": "node/11913504453"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913504458",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EGJ354",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.8917769,
+          55.9876676
+        ]
+      },
+      "id": "node/11913504458"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913583571",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EPJ513",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7159736,
+          55.9847751
+        ]
+      },
+      "id": "node/11913583571"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913583574",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EPJ508",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.7272976,
+          55.985654
+        ]
+      },
+      "id": "node/11913583574"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913658058",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EN572",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.3784268,
+          55.9345907
+        ]
+      },
+      "id": "node/11913658058"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913658063",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EN584",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4018899,
+          55.9339982
+        ]
+      },
+      "id": "node/11913658063"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725669",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EN588",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4274234,
+          55.9356168
+        ]
+      },
+      "id": "node/11913725669"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725670",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EN592",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4431534,
+          55.9438569
+        ]
+      },
+      "id": "node/11913725670"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725672",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EW594",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4526306,
+          55.9533652
+        ]
+      },
+      "id": "node/11913725672"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725674",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EW596",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4608967,
+          55.9638713
+        ]
+      },
+      "id": "node/11913725674"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725677",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EW606",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4751237,
+          55.970874
+        ]
+      },
+      "id": "node/11913725677"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725680",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EW608",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.4947545,
+          55.9742733
+        ]
+      },
+      "id": "node/11913725680"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725682",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EW612",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5183378,
+          55.9778377
+        ]
+      },
+      "id": "node/11913725682"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725684",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EL614",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5387423,
+          55.9785307
+        ]
+      },
+      "id": "node/11913725684"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725685",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EL616",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5572021,
+          55.9785502
+        ]
+      },
+      "id": "node/11913725685"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725688",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EL622",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.5839864,
+          55.9780164
+        ]
+      },
+      "id": "node/11913725688"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725693",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EL624",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.6024971,
+          55.9755505
+        ]
+      },
+      "id": "node/11913725693"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725694",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EL626",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.624627,
+          55.9741285
+        ]
+      },
+      "id": "node/11913725694"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725696",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EPB542",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.6441732,
+          55.9758448
+        ]
+      },
+      "id": "node/11913725696"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725700",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EPB522",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.6648888,
+          55.9787489
+        ]
+      },
+      "id": "node/11913725700"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725702",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EPB518",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.6872906,
+          55.9811115
+        ]
+      },
+      "id": "node/11913725702"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725705",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "railway:signal:position": "overhead",
+        "ref": "CQ84",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2506307,
+          55.8637683
+        ]
+      },
+      "id": "node/11913725705"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725715",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CQ58",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2478594,
+          55.867999
+        ]
+      },
+      "id": "node/11913725715"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725719",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CQ56",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2438682,
+          55.8738815
+        ]
+      },
+      "id": "node/11913725719"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725722",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CQ54",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2414002,
+          55.8775098
+        ]
+      },
+      "id": "node/11913725722"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725800",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CC52",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2386822,
+          55.8831121
+        ]
+      },
+      "id": "node/11913725800"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725815",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CE50",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2408804,
+          55.8900193
+        ]
+      },
+      "id": "node/11913725815"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725823",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CE48",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2372969,
+          55.896087
+        ]
+      },
+      "id": "node/11913725823"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725828",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CE46",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2321113,
+          55.9002647
+        ]
+      },
+      "id": "node/11913725828"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725831",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CE44",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2235644,
+          55.9043516
+        ]
+      },
+      "id": "node/11913725831"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725834",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CE42",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.2129763,
+          55.908476
+        ]
+      },
+      "id": "node/11913725834"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725838",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CE40",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.1993552,
+          55.9123728
+        ]
+      },
+      "id": "node/11913725838"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725849",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG38",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.1777391,
+          55.9156944
+        ]
+      },
+      "id": "node/11913725849"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725855",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG36",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.1643372,
+          55.918456
+        ]
+      },
+      "id": "node/11913725855"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725858",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG34",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.1472307,
+          55.9229161
+        ]
+      },
+      "id": "node/11913725858"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725859",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG32",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.1325322,
+          55.9263027
+        ]
+      },
+      "id": "node/11913725859"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725861",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG30",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.1166141,
+          55.9291016
+        ]
+      },
+      "id": "node/11913725861"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725864",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG26",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.0994436,
+          55.9324736
+        ]
+      },
+      "id": "node/11913725864"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725865",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG24",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.0863972,
+          55.9364555
+        ]
+      },
+      "id": "node/11913725865"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725867",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG20",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.0601683,
+          55.9485958
+        ]
+      },
+      "id": "node/11913725867"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725871",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG18",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.0437514,
+          55.9524803
+        ]
+      },
+      "id": "node/11913725871"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725874",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG16",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.0312869,
+          55.9593443
+        ]
+      },
+      "id": "node/11913725874"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725875",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG14",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.020899,
+          55.9669307
+        ]
+      },
+      "id": "node/11913725875"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725877",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG12",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -4.004312,
+          55.9715921
+        ]
+      },
+      "id": "node/11913725877"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11913725880",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "CG10",
+        "route_ref": "gefl_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.9881489,
+          55.9765421
+        ]
+      },
+      "id": "node/11913725880"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915636541",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "railway:signal:shunting": "GB-NR:shunting",
+        "railway:signal:shunting:form": "light",
+        "ref": "E484",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.1949674,
+          55.9510029
+        ]
+      },
+      "id": "node/11915636541"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915636554",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "E495",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.1973053,
+          55.9506194
+        ]
+      },
+      "id": "node/11915636554"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915636560",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "railway:signal:position": "overhead",
+        "ref": "E502",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2019855,
+          55.9497727
+        ]
+      },
+      "id": "node/11915636560"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915636564",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "E506",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2085185,
+          55.9476283
+        ]
+      },
+      "id": "node/11915636564"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642369",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EH510",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2174168,
+          55.9455221
+        ]
+      },
+      "id": "node/11915642369"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642381",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "railway:signal:position": "overhead",
+        "ref": "EH522",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2269993,
+          55.9435408
+        ]
+      },
+      "id": "node/11915642381"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642396",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EH528",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2364903,
+          55.9414143
+        ]
+      },
+      "id": "node/11915642396"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642403",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EH552",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2529446,
+          55.937727
+        ]
+      },
+      "id": "node/11915642403"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642408",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EH558",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2735585,
+          55.9331154
+        ]
+      },
+      "id": "node/11915642408"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642411",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EH562",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.2951263,
+          55.9289268
+        ]
+      },
+      "id": "node/11915642411"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642413",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EH564",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.3176331,
+          55.9264998
+        ]
+      },
+      "id": "node/11915642413"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642415",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EN566",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.3400662,
+          55.9267815
+        ]
+      },
+      "id": "node/11915642415"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11915642417",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "EN568",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.3608723,
+          55.9317812
+        ]
+      },
+      "id": "node/11915642417"
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "@id": "node/11916000942",
+        "railway": "signal",
+        "railway:signal:direction": "forward",
+        "railway:signal:main": "GB-NR:main",
+        "railway:signal:main:form": "light",
+        "ref": "E475",
+        "route_ref": "geml_d"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -3.19307,
+          55.9512509
+        ]
+      },
+      "id": "node/11916000942"
+    }
+  ]
+}
