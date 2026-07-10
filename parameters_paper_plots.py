@@ -1,7 +1,35 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from models import model, test_model
+from models import model, model_non_electrified, model_test
 from matplotlib.gridspec import GridSpec
+
+
+def non_electrified(sec):
+    ex_values = np.array([0, 0, 0])
+    ey_values = np.array([-5, 0, 5])
+    output = model_non_electrified(sec, ex_uniform=ex_values, ey_uniform=ey_values)
+    output_elec = model(sec, ex_uniform=ex_values, ey_uniform=ey_values)
+    ia = output['i_relays_a']
+    ia_elec = output_elec['i_relays_a']
+    plt.rcParams['font.size'] = '12'
+    fig = plt.figure(figsize=(16, 8))
+    gs = GridSpec(2, 1)
+    ax0 = fig.add_subplot(gs[0])
+    ax1 = fig.add_subplot(gs[1])
+    ax0.plot(ia[:, 0], 'v', label='Ey = -5 V/km')
+    ax0.plot(ia[:, 1], '.', label='No electric field applied')
+    ax0.plot(ia[:, 2], '^', label='Ey = 5 V/km')
+    ax1.plot(ia_elec[:, 0], 'v')
+    ax1.plot(ia_elec[:, 1], '.')
+    ax1.plot(ia_elec[:, 2], '^')
+    ax0.legend()
+    ax0.set_title('Non-Electrified Line')
+    ax1.set_title('AC Electrified Line')
+    ax0.set_ylabel('Relay Current (A)')
+    ax1.set_ylabel('Relay Current (A)')
+    ax1.set_xlabel('Track Circuit Number')
+    plt.savefig('non_electrified.pdf')
+    plt.show()
 
 
 def feed_polarity_staggering(sec):
@@ -306,6 +334,268 @@ def block_bearing(sec):
     ax6.set_axisbelow(True)
 
     plt.savefig('block_bearings.pdf')
+    plt.show()
+
+
+def block_bearing_a(sec):
+    lon_lats = np.load(f'data/rail_data/{sec}/{sec}_block_lons_lats.npz')
+    lons = lon_lats['lons']
+    lats = lon_lats['lats']
+    data = np.load(f'data/rail_data/{sec}/{sec}_distances_bearings.npz')
+    block_lengths = data['distances']
+    block_sum = np.insert(np.cumsum(block_lengths), 0, 0)
+
+    ey_values = np.linspace(-10, 10, 5)
+    ex_values = np.zeros(np.shape(ey_values))
+    output_90 = model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_90 = output_90["i_relays_a"]
+    output_test_90 = test_model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_test_90 = output_test_90["i_relays_a"]
+
+    ex_values = np.linspace(-(10/np.sqrt(2)), (10/np.sqrt(2)), 5)
+    ey_values = np.linspace(-(10/np.sqrt(2)), (10/np.sqrt(2)), 5)
+    output_45 = model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_45 = output_45["i_relays_a"]
+    output_test_45 = test_model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_test_45 = output_test_45["i_relays_a"]
+
+    ex_values = np.linspace(-10, 10, 5)
+    ey_values = np.zeros(np.shape(ex_values))
+    output_0 = model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_0 = output_0["i_relays_a"]
+    output_test_0 = test_model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_test_0 = output_test_0["i_relays_a"]
+
+    plt.rcParams['font.size'] = '12'
+    fig = plt.figure(figsize=(14, 10))
+    gs = GridSpec(4, 5, hspace=0.2, wspace=0.01, left=0.08, bottom=0.09)
+    ax_map1 = fig.add_subplot(gs[0, :4])
+    ax1 = fig.add_subplot(gs[1, :4])
+    ax3 = fig.add_subplot(gs[2, :4])
+    ax5 = fig.add_subplot(gs[3, :4])
+    ax7 = fig.add_subplot(gs[1, 4])
+    ax8 = fig.add_subplot(gs[2, 4])
+    ax9 = fig.add_subplot(gs[3, 4])
+    markersize = 20
+    alpha = 0.2
+
+    ax_map1.scatter(lons, lats, s=6, marker='o', facecolor='white', edgecolor='black')
+    ax_map1.plot(lons, lats, zorder=-1, linewidth=1)
+
+    ax1.scatter(range(0, len(i_relays_90[:, 0]), 2), i_relays_90[::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -10 V/km', zorder=1)
+    ax1.scatter(range(0, len(i_relays_90[:, 0]), 2), i_relays_90[::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -5 V/km', zorder=1)
+    ax1.scatter(range(0, len(i_relays_90[:, 0]), 2), i_relays_90[::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', label='No geoelectric field', zorder=1)
+    ax1.scatter(range(0, len(i_relays_90[:, 0]), 2), i_relays_90[::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 5 V/km', zorder=1)
+    ax1.scatter(range(0, len(i_relays_90[:, 0]), 2), i_relays_90[::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 10 V/km', zorder=1)
+    ax1.scatter(range(1, len(i_relays_90[:, 0]), 2), i_relays_90[1::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax1.scatter(range(1, len(i_relays_90[:, 0]), 2), i_relays_90[1::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax1.scatter(range(1, len(i_relays_90[:, 0]), 2), i_relays_90[1::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', alpha=alpha, zorder=1)
+    ax1.scatter(range(1, len(i_relays_90[:, 0]), 2), i_relays_90[1::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax1.scatter(range(1, len(i_relays_90[:, 0]), 2), i_relays_90[1::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+
+    ax3.scatter(range(0, len(i_relays_45[:, 0]), 2), i_relays_45[::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -10 V/km', zorder=1)
+    ax3.scatter(range(0, len(i_relays_45[:, 0]), 2), i_relays_45[::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -5 V/km', zorder=1)
+    ax3.scatter(range(0, len(i_relays_45[:, 0]), 2), i_relays_45[::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', label='No geoelectric field', zorder=1)
+    ax3.scatter(range(0, len(i_relays_45[:, 0]), 2), i_relays_45[::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 5 V/km', zorder=1)
+    ax3.scatter(range(0, len(i_relays_45[:, 0]), 2), i_relays_45[::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 10 V/km', zorder=1)
+    ax3.scatter(range(1, len(i_relays_45[:, 0]), 2), i_relays_45[1::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax3.scatter(range(1, len(i_relays_45[:, 0]), 2), i_relays_45[1::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax3.scatter(range(1, len(i_relays_45[:, 0]), 2), i_relays_45[1::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', alpha=alpha, zorder=1)
+    ax3.scatter(range(1, len(i_relays_45[:, 0]), 2), i_relays_45[1::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax3.scatter(range(1, len(i_relays_45[:, 0]), 2), i_relays_45[1::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+
+    ax5.scatter(range(0, len(i_relays_0[:, 0]), 2), i_relays_0[::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -10 V/km', zorder=1)
+    ax5.scatter(range(0, len(i_relays_0[:, 0]), 2), i_relays_0[::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -5 V/km', zorder=1)
+    ax5.scatter(range(0, len(i_relays_0[:, 0]), 2), i_relays_0[::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', label='No geoelectric field', zorder=1)
+    ax5.scatter(range(0, len(i_relays_0[:, 0]), 2), i_relays_0[::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 5 V/km', zorder=1)
+    ax5.scatter(range(0, len(i_relays_0[:, 0]), 2), i_relays_0[::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 10 V/km', zorder=1)
+    ax5.scatter(range(1, len(i_relays_0[:, 0]), 2), i_relays_0[1::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax5.scatter(range(1, len(i_relays_0[:, 0]), 2), i_relays_0[1::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax5.scatter(range(1, len(i_relays_0[:, 0]), 2), i_relays_0[1::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', alpha=alpha, zorder=1)
+    ax5.scatter(range(1, len(i_relays_0[:, 0]), 2), i_relays_0[1::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax5.scatter(range(1, len(i_relays_0[:, 0]), 2), i_relays_0[1::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+
+    ax7.annotate("", xytext=(0, 0), xy=(1, 0), arrowprops=dict(arrowstyle="->"))
+    ax7.text(0.5, 1.25, r'$90\degree$', ha='center')
+    ax8.annotate("", xytext=(0, 0), xy=(np.sqrt(0.5), np.sqrt(0.5)), arrowprops=dict(arrowstyle="->"))
+    ax8.text(0.5, 1.25, r'$45\degree$', ha='center')
+    ax9.annotate("", xytext=(0, 0), xy=(0, 1), arrowprops=dict(arrowstyle="->"))
+    ax9.text(0.5, 1.25, r'$0\degree$', ha='center')
+
+    ylim_min = -1.5
+    ylim_max = 1
+    ax1.set_ylim(ylim_min, ylim_max)
+    ax3.set_ylim(ylim_min, ylim_max)
+    ax5.set_ylim(ylim_min, ylim_max)
+
+    ax7.set_xlim(-0.5, 1.5)
+    ax8.set_xlim(-0.5, 1.5)
+    ax9.set_xlim(-0.5, 1.5)
+    ax7.set_ylim(-0.5, 1.5)
+    ax8.set_ylim(-0.5, 1.5)
+    ax9.set_ylim(-0.5, 1.5)
+
+    ax_map1.set_title('Realistic Line Geometry')
+    ax7.set_title('E-field Bearing')
+
+    ax_map1.set_xticks([])
+    # ax1.set_xticks([])
+    # ax2.set_xticks([])
+    # ax3.set_xticks([])
+    # ax4.set_xticks([])
+    ax7.set_xticks([])
+    ax8.set_xticks([])
+    ax9.set_xticks([])
+
+    ax_map1.set_yticks([])
+    ax7.set_yticks([])
+    ax8.set_yticks([])
+    ax9.set_yticks([])
+
+    ax5.set_xlabel('Track Circuit Number')
+    ax3.set_ylabel('Relay Current (A)')
+
+    ax1.legend(loc='lower center', ncol=5, fontsize=10)
+    ax3.legend(loc='lower center', ncol=5, fontsize=10)
+    ax5.legend(loc='lower center', ncol=5, fontsize=10)
+
+    ax1.grid(axis='x', zorder=-2)
+    ax3.grid(axis='x', zorder=-2)
+    ax5.grid(axis='x', zorder=-2)
+    ax1.set_axisbelow(True)
+    ax3.set_axisbelow(True)
+    ax5.set_axisbelow(True)
+
+    plt.savefig('block_bearings_a.pdf')
+    plt.show()
+
+
+def block_bearing_b(sec):
+    lon_lats = np.load(f'data/rail_data/{sec}/{sec}_block_lons_lats.npz')
+    lons = lon_lats['lons']
+    lats = lon_lats['lats']
+    data = np.load(f'data/rail_data/{sec}/{sec}_distances_bearings.npz')
+    block_lengths = data['distances']
+    block_sum = np.insert(np.cumsum(block_lengths), 0, 0)
+
+    ey_values = np.linspace(-10, 10, 5)
+    ex_values = np.zeros(np.shape(ey_values))
+    output_90 = model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_90 = output_90["i_relays_a"]
+    output_test_90 = test_model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_test_90 = output_test_90["i_relays_a"]
+
+    ex_values = np.linspace(-(10/np.sqrt(2)), (10/np.sqrt(2)), 5)
+    ey_values = np.linspace(-(10/np.sqrt(2)), (10/np.sqrt(2)), 5)
+    output_45 = model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_45 = output_45["i_relays_a"]
+    output_test_45 = test_model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_test_45 = output_test_45["i_relays_a"]
+
+    ex_values = np.linspace(-10, 10, 5)
+    ey_values = np.zeros(np.shape(ex_values))
+    output_0 = model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_0 = output_0["i_relays_a"]
+    output_test_0 = test_model(sec, ex_uniform=ex_values, ey_uniform=ey_values, y_trac=1.6)
+    i_relays_test_0 = output_test_0["i_relays_a"]
+
+    plt.rcParams['font.size'] = '12'
+    fig = plt.figure(figsize=(14, 10))
+    gs = GridSpec(4, 5, hspace=0.2, wspace=0.01, left=0.08, bottom=0.09)
+    ax_map2 = fig.add_subplot(gs[0, :4])
+    ax2 = fig.add_subplot(gs[1, :4])
+    ax4 = fig.add_subplot(gs[2, :4])
+    ax6 = fig.add_subplot(gs[3, :4])
+    ax7 = fig.add_subplot(gs[1, 4])
+    ax8 = fig.add_subplot(gs[2, 4])
+    ax9 = fig.add_subplot(gs[3, 4])
+
+    markersize = 20
+    alpha = 0.2
+
+    ax_map2.scatter(block_sum, np.zeros(len(block_sum)), s=6, marker='o', facecolor='white', edgecolor='black')
+    ax_map2.plot(block_sum, np.zeros(len(block_sum)), zorder=-1, linewidth=1)
+
+    ax2.scatter(range(0, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -10 V/km', zorder=1)
+    ax2.scatter(range(0, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -5 V/km', zorder=1)
+    ax2.scatter(range(0, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', label='No geoelectric field', zorder=1)
+    ax2.scatter(range(0, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 5 V/km', zorder=1)
+    ax2.scatter(range(0, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 10 V/km', zorder=1)
+    ax2.scatter(range(1, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[1::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax2.scatter(range(1, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[1::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax2.scatter(range(1, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[1::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', alpha=alpha, zorder=1)
+    ax2.scatter(range(1, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[1::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax2.scatter(range(1, len(i_relays_test_90[:, 0]), 2), i_relays_test_90[1::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+
+    ax4.scatter(range(0, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -10 V/km', zorder=1)
+    ax4.scatter(range(0, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -5 V/km', zorder=1)
+    ax4.scatter(range(0, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', label='No geoelectric field', zorder=1)
+    ax4.scatter(range(0, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 5 V/km', zorder=1)
+    ax4.scatter(range(0, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 10 V/km', zorder=1)
+    ax4.scatter(range(1, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[1::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax4.scatter(range(1, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[1::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax4.scatter(range(1, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[1::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', alpha=alpha, zorder=1)
+    ax4.scatter(range(1, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[1::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax4.scatter(range(1, len(i_relays_test_45[:, 0]), 2), i_relays_test_45[1::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+
+    ax6.scatter(range(0, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -10 V/km', zorder=1)
+    ax6.scatter(range(0, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = -5 V/km', zorder=1)
+    ax6.scatter(range(0, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', label='No geoelectric field', zorder=1)
+    ax6.scatter(range(0, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 5 V/km', zorder=1)
+    ax6.scatter(range(0, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', label='E = 10 V/km', zorder=1)
+    ax6.scatter(range(1, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[1::2, 0], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax6.scatter(range(1, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[1::2, 1], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax6.scatter(range(1, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[1::2, 2], s=markersize, linewidths=0.25, marker='o', facecolor='white', edgecolor='black', alpha=alpha, zorder=1)
+    ax6.scatter(range(1, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[1::2, 3], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+    ax6.scatter(range(1, len(i_relays_test_0[:, 0]), 2), i_relays_test_0[1::2, 4], s=markersize, linewidths=0.25, marker='o', edgecolor='black', alpha=alpha, zorder=1)
+
+    ax7.annotate("", xytext=(0, 0), xy=(1, 0), arrowprops=dict(arrowstyle="->"))
+    ax7.text(0.5, 1.25, r'$90\degree$', ha='center')
+    ax8.annotate("", xytext=(0, 0), xy=(np.sqrt(0.5), np.sqrt(0.5)), arrowprops=dict(arrowstyle="->"))
+    ax8.text(0.5, 1.25, r'$45\degree$', ha='center')
+    ax9.annotate("", xytext=(0, 0), xy=(0, 1), arrowprops=dict(arrowstyle="->"))
+    ax9.text(0.5, 1.25, r'$0\degree$', ha='center')
+
+    ylim_min = -1.5
+    ylim_max = 1
+    ax2.set_ylim(ylim_min, ylim_max)
+    ax4.set_ylim(ylim_min, ylim_max)
+    ax6.set_ylim(ylim_min, ylim_max)
+
+    ax7.set_xlim(-0.5, 1.5)
+    ax8.set_xlim(-0.5, 1.5)
+    ax9.set_xlim(-0.5, 1.5)
+    ax7.set_ylim(-0.5, 1.5)
+    ax8.set_ylim(-0.5, 1.5)
+    ax9.set_ylim(-0.5, 1.5)
+
+    ax7.set_title('E-field Bearing')
+    ax_map2.set_title(r'Straight Line Geometry ($90\degree$)')
+
+    ax7.set_xticks([])
+    ax8.set_xticks([])
+    ax9.set_xticks([])
+    ax7.set_yticks([])
+    ax8.set_yticks([])
+    ax9.set_yticks([])
+    ax_map2.set_xticks([])
+    ax_map2.set_yticks([])
+
+    fig.supxlabel('Track Circuit Number')
+    ax4.set_ylabel('Relay Current (A)')
+
+    ax2.legend(loc='lower center', ncol=5, fontsize=10)
+    ax4.legend(loc='lower center', ncol=5, fontsize=10)
+    ax6.legend(loc='lower center', ncol=5, fontsize=10)
+
+    ax2.grid(axis='x', zorder=-2)
+    ax4.grid(axis='x', zorder=-2)
+    ax6.grid(axis='x', zorder=-2)
+    ax2.set_axisbelow(True)
+    ax4.set_axisbelow(True)
+    ax6.set_axisbelow(True)
+
+    plt.savefig('block_bearings_b.pdf')
     plt.show()
 
 
@@ -739,7 +1029,7 @@ def rail_impedance_ws(sec):
     ax0.set_xlabel('Track Circuit Number')
     ax0.set_ylabel('Minimum WSF Misoperation Electric Field Strength (V/km)')
 
-    plt.savefig('rail_impedance_ws.pdf')
+    #plt.savefig('rail_impedance_ws.pdf')
     plt.show()
 
 
@@ -824,6 +1114,37 @@ def traction_rail_leakage_rs(sec):
     plt.show()
 
 
+def traction_rail_leakage_test(sec):
+    markersize = 50
+    plt.rcParams['font.size'] = '12'
+    fig = plt.figure(figsize=(12, 6))
+    gs = GridSpec(2, 1)
+    ax0 = fig.add_subplot(gs[0])
+    ax1 = fig.add_subplot(gs[1])
+
+    data = np.load(f'data/rail_data/{sec}/{sec}_distances_bearings.npz')
+    bearing = np.deg2rad(60)
+    e_values = np.array([5])
+
+    ex_uni = e_values * np.cos(bearing)
+    ey_uni = e_values * np.sin(bearing)
+    output1 = model(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, y_trac=4.14)
+    output2 = model(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, y_trac=0.53)
+    v1 = output1['v_matrix']
+    v2 = output2['v_matrix']
+    ax0.plot(v1, color='red')
+    ax0.plot(v2, '--', color='red')
+
+    output1 = model_test(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, y_trac=4.14)
+    output2 = model_test(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, y_trac=0.53)
+    v1 = output1['v_matrix']
+    v2 = output2['v_matrix']
+    ax1.plot(v1, color='green')
+    ax1.plot(v2, '--', color='green')
+
+    plt.show()
+
+
 def traction_rail_leakage_ws(sec):
     markersize = 50
     plt.rcParams['font.size'] = '12'
@@ -836,7 +1157,7 @@ def traction_rail_leakage_ws(sec):
     bearings = np.deg2rad(np.arange(0, 360, 5))
     e_values = np.linspace(0, 20, 201)
     threshold = 0.081
-    axles = np.load(f'data/axle_positions/glasgow_edinburgh_falkirk_train_end_axles_midpoint_a.npy')
+    axles = np.load(f'data/axle_positions/{sec}_train_end_axles_midpoint_a.npy')
 
     currents_all_e = np.full((len(bearings), len(block_bearings), len(e_values)), np.nan)
     for a in range(0, 10):
@@ -914,9 +1235,96 @@ def traction_rail_leakage_ws(sec):
     plt.savefig('traction_rail_leakage_ws.pdf')
     plt.show()
 
+
+def rail_impedance_test(sec):
+    markersize = 50
+    plt.rcParams['font.size'] = '12'
+    fig = plt.figure(figsize=(12, 6))
+    gs = GridSpec(3, 1)
+    ax0 = fig.add_subplot(gs[0])
+    ax1 = fig.add_subplot(gs[1])
+    ax2 = fig.add_subplot(gs[2])
+
+    data = np.load(f'data/rail_data/{sec}/{sec}_distances_bearings.npz')
+    block_bearings = np.rad2deg(data['bearings'])
+    bearings = np.deg2rad(np.arange(0, 360, 5))
+    e_values = np.linspace(0, 20, 201)
+    loc_misops_all = np.zeros((len(bearings), len(block_bearings)))
+    for i in range(0, len(bearings)):
+        ex_uni = e_values * np.cos(bearings[i])
+        ey_uni = e_values * np.sin(bearings[i])
+        output = model(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, y_trac=1.6)
+        currents = output['i_relays_a']
+        for b in range(0, len(currents[:, 0])):
+            loc_misops = np.where((currents[b, :] < 0.055) & (currents[b, :] > -0.055))
+            if len(loc_misops[0]) != 0:
+                loc_misops_all[i, b] = np.min(loc_misops[0])
+    misop_threshrs1 = np.full(len(block_bearings), np.nan)
+    for i in range(0, len(misop_threshrs1)):
+        if len(np.nonzero(loc_misops_all[:, i])[0]) != 0:
+            misop_threshrs1[i] = e_values[int(np.min(loc_misops_all[np.nonzero(loc_misops_all[:, i])[0], i]))]
+    ax0.plot(misop_threshrs1, 'v', color='red')
+
+    loc_misops_all = np.zeros((len(bearings), len(block_bearings)))
+    for i in range(0, len(bearings)):
+        ex_uni = e_values * np.cos(bearings[i])
+        ey_uni = e_values * np.sin(bearings[i])
+        output = model(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, y_trac=1.6, z_trac=0.25, z_sig=0.25)
+        currents = output['i_relays_a']
+        for b in range(0, len(currents[:, 0])):
+            loc_misops = np.where((currents[b, :] < 0.055) & (currents[b, :] > -0.055))
+            if len(loc_misops[0]) != 0:
+                loc_misops_all[i, b] = np.min(loc_misops[0])
+    misop_threshrs2 = np.full(len(block_bearings), np.nan)
+    for i in range(0, len(misop_threshrs2)):
+        if len(np.nonzero(loc_misops_all[:, i])[0]) != 0:
+            misop_threshrs2[i] = e_values[int(np.min(loc_misops_all[np.nonzero(loc_misops_all[:, i])[0], i]))]
+    ax0.plot(misop_threshrs2, '^', color='red')
+
+    loc_misops_all = np.zeros((len(bearings), len(block_bearings)))
+    for i in range(0, len(bearings)):
+        ex_uni = e_values * np.cos(bearings[i])
+        ey_uni = e_values * np.sin(bearings[i])
+        output = model_test(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, y_trac=1.6)
+        currents = output['i_relays_a']
+        for b in range(0, len(currents[:, 0])):
+            loc_misops = np.where((currents[b, :] > 0.081) | (currents[b, :] < -0.081))
+            if len(loc_misops[0]) != 0:
+                loc_misops_all[i, b] = np.min(loc_misops[0])
+    misop_threshws1 = np.full(len(block_bearings), np.nan)
+    for i in range(0, len(misop_threshws1)):
+        if len(np.nonzero(loc_misops_all[:, i])[0]) != 0:
+            misop_threshws1[i] = e_values[int(np.min(loc_misops_all[np.nonzero(loc_misops_all[:, i])[0], i]))]
+    ax1.plot(misop_threshws1, 'v', color='green')
+
+    loc_misops_all = np.zeros((len(bearings), len(block_bearings)))
+    for i in range(0, len(bearings)):
+        ex_uni = e_values * np.cos(bearings[i])
+        ey_uni = e_values * np.sin(bearings[i])
+        output = model_test(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, y_trac=1.6, z_trac=0.25, z_sig=0.25)
+        currents = output['i_relays_a']
+        for b in range(0, len(currents[:, 0])):
+            loc_misops = np.where((currents[b, :] > 0.081) | (currents[b, :] < -0.081))
+            if len(loc_misops[0]) != 0:
+                loc_misops_all[i, b] = np.min(loc_misops[0])
+    misop_threshws2 = np.full(len(block_bearings), np.nan)
+    for i in range(0, len(misop_threshws2)):
+        if len(np.nonzero(loc_misops_all[:, i])[0]) != 0:
+            misop_threshws2[i] = e_values[int(np.min(loc_misops_all[np.nonzero(loc_misops_all[:, i])[0], i]))]
+    ax1.plot(misop_threshws2, '^', color='green')
+
+    ax2.plot(misop_threshrs1 - misop_threshrs2, '.', color='red')
+    ax2.plot(misop_threshws1 - misop_threshws2, '.', color='green')
+
+    plt.show()
+    pass
+
+
+
 # feed_polarity_staggering('glasgow_edinburgh_falkirk')
 # feed_polarity_staggering_merged('glasgow_edinburgh_falkirk')
-# block_bearing('glasgow_edinburgh_falkirk')
+# block_bearing_a('glasgow_edinburgh_falkirk')
+# block_bearing_b('glasgow_edinburgh_falkirk')
 # block_bearing_thresholds_rs('glasgow_edinburgh_falkirk')
 # block_bearing_thresholds_ws('glasgow_edinburgh_falkirk')
 # block_bearing_thresholds_ws_merged('glasgow_edinburgh_falkirk')
@@ -925,4 +1333,7 @@ def traction_rail_leakage_ws(sec):
 # rail_impedance_rs('glasgow_edinburgh_falkirk')
 # rail_impedance_ws('glasgow_edinburgh_falkirk')
 # traction_rail_leakage_rs('glasgow_edinburgh_falkirk')
-traction_rail_leakage_ws('glasgow_edinburgh_falkirk')
+# traction_rail_leakage_ws('glasgow_edinburgh_falkirk')
+# rail_impedance_test('glasgow_edinburgh_falkirk')
+traction_rail_leakage_test('glasgow_edinburgh_falkirk')
+# non_electrified('glasgow_edinburgh_falkirk')
