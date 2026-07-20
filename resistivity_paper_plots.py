@@ -22,8 +22,8 @@ def mast_resistivity_merged():
     mast_res_a80_ecml = mast_res_ecml['a80']
 
     markersize = 1
-    plt.rcParams['font.size'] = '12'
-    fig = plt.figure(figsize=(12, 8))
+    plt.rcParams['font.size'] = '15'
+    fig = plt.figure(figsize=(10, 8))
     gs = GridSpec(3, 1, hspace=0.15)
     ax0 = fig.add_subplot(gs[0])
     ax1 = fig.add_subplot(gs[1])
@@ -56,7 +56,7 @@ def mast_resistivity_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/mast_res_merged.pdf')
+    plt.savefig(f'plots/1. mast_res_merged.pdf')
     #plt.show()
 
 
@@ -75,8 +75,8 @@ def block_leakage_merged():
     block_leak_a80_ecml = block_leak_ecml['a80']
 
     markersize = 1
-    plt.rcParams['font.size'] = '12'
-    fig = plt.figure(figsize=(12, 8))
+    plt.rcParams['font.size'] = '15'
+    fig = plt.figure(figsize=(10, 8))
     gs = GridSpec(3, 1, hspace=0.15)
     ax0 = fig.add_subplot(gs[0])
     ax1 = fig.add_subplot(gs[1])
@@ -111,7 +111,7 @@ def block_leakage_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/block_leak_merged.pdf')
+    plt.savefig(f'plots/3. block_leak_merged.pdf')
     #plt.show()
 
 
@@ -134,8 +134,8 @@ def block_leakage_total_merged():
     block_leak_a80_ecml = np.multiply(block_leak_ecml['a80'], block_lengths_ecml)
 
     markersize = 1
-    plt.rcParams['font.size'] = '12'
-    fig = plt.figure(figsize=(12, 8))
+    plt.rcParams['font.size'] = '15'
+    fig = plt.figure(figsize=(10, 8))
     gs = GridSpec(3, 1, hspace=0.15)
     ax0 = fig.add_subplot(gs[0])
     ax1 = fig.add_subplot(gs[1])
@@ -174,7 +174,7 @@ def block_leakage_total_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/block_leak_total_merged.pdf')
+    plt.savefig(f'plots/4. block_leak_total_merged.pdf')
     #plt.show()
 
 
@@ -324,8 +324,8 @@ def block_leakage_cumulative_hist_single_merged():
     block_leak_a80_ecml = block_leak_ecml['a80']
 
     markersize = 1
-    plt.rcParams['font.size'] = '12'
-    fig = plt.figure(figsize=(12, 5))
+    plt.rcParams['font.size'] = '15'
+    fig = plt.figure(figsize=(10, 5))
     gs = GridSpec(1, 1, hspace=0.15)
     ax0 = fig.add_subplot(gs[0])
 
@@ -335,15 +335,15 @@ def block_leakage_cumulative_hist_single_merged():
     ax0.hist(block_leak_a50_ge, bins=bins, alpha=0.75, cumulative=True, histtype="stepfilled", color='cornflowerblue', label='Glasgow to Edinburgh via Falkirk')
 
     ax0.set_xlim(0, 9)
-    ax0.set_ylim(0, 1000)
+    ax0.set_ylim(0, 1200)
 
     ax0.axvline(1.6, linestyle='--', color='black')
 
     ax0.set_xlabel('Parallel admittance (S $\mathregular{km^{-1}}$)')
     ax0.set_ylabel('Cumulative count')
-    ax0.legend(loc='upper center')
+    ax0.legend(loc='upper center', ncols=2)
 
-    plt.savefig(f'plots/block_leak_cumulative_hist_single_merged.pdf')
+    plt.savefig(f'plots/5. block_leak_cumulative_hist_single_merged.pdf')
     #plt.show()
 
 
@@ -552,9 +552,9 @@ def thresholds_ws(sec):
 
 def thresholds_rs_dif(sec):
     markersize = 50
-    plt.rcParams['font.size'] = '12'
-    fig = plt.figure(figsize=(12, 8))
-    gs = GridSpec(3, 1, hspace=0.2)
+    plt.rcParams['font.size'] = '15'
+    fig = plt.figure(figsize=(10, 8))
+    gs = GridSpec(3, 1)
     ax0 = fig.add_subplot(gs[0])
     ax1 = fig.add_subplot(gs[1])
     ax2 = fig.add_subplot(gs[2])
@@ -563,7 +563,7 @@ def thresholds_rs_dif(sec):
     block_bearings = np.rad2deg(data['bearings'])
     bearings = np.deg2rad(np.arange(0, 360, 5))
     e_values = np.linspace(0, 20, 201)
-    e_all = np.load(f'e_all_bearings_20.npy.npz')
+    e_all = np.load(f'data/bearing_e_fields/e_all_bearings_20.npz')
     ex = e_all['ex'].flatten()
     ey = e_all['ey'].flatten()
     threshold = 0.055
@@ -587,7 +587,7 @@ def thresholds_rs_dif(sec):
         else:
             pass
     # Plot results
-    ax0.scatter(range(0, len(e_thresholds_realistic)), e_thresholds_realistic, s=markersize, marker='X', edgecolor='black', facecolor='orangered', linewidths=0.5, label='Realistic parallel admittance', zorder=1)
+    ax0.scatter(range(0, len(e_thresholds_realistic)), e_thresholds_realistic, s=markersize, marker='X', edgecolor='black', facecolor='orangered', linewidths=0.5, label='Realistic', zorder=5)
 
     output = model(section_name=sec, ex_uniform=ex, ey_uniform=ey, y_trac=1.6)
     currents = output['i_relays_a']
@@ -613,32 +613,36 @@ def thresholds_rs_dif(sec):
     under = np.shape(np.where(e_dif < 0))
 
     # Plot results
-    ax0.scatter(range(0, len(e_thresholds)), e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='mistyrose', linewidths=0.5, label='Uniform parallel admittance (1.6 S $\mathregular{km^{-1}}$)', zorder=-1)
+    ax0.scatter(range(0, len(e_thresholds)), e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='mistyrose', linewidths=0.5, label='Uniform (1.6 S $\mathregular{km^{-1}}$)', zorder=4)
 
-    ax1.scatter(range(0, len(e_thresholds)), e_dif, s=markersize, marker='o', edgecolor='black', facecolor='orangered', linewidths=0.5, zorder=1)
-    ax1.axhline(0, color='black', linestyle='--', zorder=-2)
+    ax1.scatter(range(0, len(e_thresholds)), e_dif, s=markersize, marker='o', edgecolor='black', facecolor='orangered', linewidths=0.5, zorder=5)
+    ax1.axhline(0, color='black', linestyle='--', linewidth=1, zorder=3)
 
-    ax0.set_xlim(-5, len(e_thresholds)+5)
-    ax1.set_xlim(-5, len(e_thresholds) + 5)
-    ax2.set_xlim(-5, len(e_thresholds) + 5)
+    ax0.set_xlim(-10, len(e_thresholds)+10)
+    ax1.set_xlim(-10, len(e_thresholds)+10)
+    ax2.set_xlim(-10, len(e_thresholds)+10)
 
-    ax2.plot(block_bearings, '.', color='tomato')
+    #ax2.plot(block_bearings, '.', color='tomato')
+    ax2.plot(np.arange(0, len(block_bearings[:-1])) + 0.5, block_bearings[1:] - block_bearings[:-1], '.', color='tomato')
 
-    ax0.legend(loc='upper center')
+
+    ax0.legend(loc='upper center', ncol=2)
     ax2.set_xlabel('Track circuit number')
-    ax2.set_ylabel('Block orientation ($^\circ$)')
-    ax0.set_ylabel('Misoperation E (V $\mathregular{km^{-1}}$)')
-    ax1.set_ylabel('E difference (V $\mathregular{km^{-1}}$)')
+    ax2.set_ylabel('Block orientation\n($^\circ$)', multialignment='center')
+    ax0.set_ylabel('Misoperation E\n(V $\mathregular{km^{-1}}$)', multialignment='center')
+    ax1.set_ylabel('E difference\n(V $\mathregular{km^{-1}}$)', multialignment='center')
     ax0.set_xticks([])
+    ax1.grid(axis='x', color='black', alpha=0.5, zorder=1)
+    ax2.grid(axis='x', color='black', alpha=0.5, zorder=1)
 
-    plt.savefig(f'plots/0. thresholds_rs_dif_{sec}.pdf')
-    #plt.show()
+    plt.savefig(f'plots/6. thresholds_rs_dif_{sec}.pdf')
+    plt.show()
 
 
 def thresholds_ws_dif(sec):
     markersize = 50
-    plt.rcParams['font.size'] = '12'
-    fig = plt.figure(figsize=(12, 8))
+    plt.rcParams['font.size'] = '15'
+    fig = plt.figure(figsize=(10, 8))
     gs = GridSpec(2, 1)
     ax0 = fig.add_subplot(gs[0])
     ax1 = fig.add_subplot(gs[1])
@@ -670,8 +674,9 @@ def thresholds_ws_dif(sec):
             e_thresholds_realistic[i] = e_values[int(first_misoperation_bearing[i])]
         else:
             pass
+    e_thresholds_realistic[np.where(e_thresholds_realistic == 0)] = np.nan
     # Plot results
-    ax0.scatter(range(0, len(e_thresholds_realistic)), e_thresholds_realistic, s=markersize, marker='X', edgecolor='black', facecolor='honeydew', linewidths=0.5, label='Realistic parallel admittance')
+    ax0.scatter(range(0, len(e_thresholds_realistic)), e_thresholds_realistic, s=markersize, marker='X', edgecolor='black', facecolor='honeydew', linewidths=0.5, label='Realistic', zorder=5)
 
     currents_all_e = np.full((len(bearings), len(block_bearings), len(e_values)), np.nan)
     for a in range(0, 10):
@@ -693,23 +698,27 @@ def thresholds_ws_dif(sec):
             e_thresholds[i] = e_values[int(first_misoperation_bearing[i])]
         else:
             pass
+    e_thresholds[np.where(e_thresholds == 0)] = np.nan
     # Plot results
-    ax0.scatter(range(0, len(e_thresholds)), e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='limegreen', linewidths=0.5, label='Uniform parallel admittance (1.6 S $\mathregular{km^{-1}}$)')
+    ax0.scatter(range(0, len(e_thresholds)), e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='limegreen', linewidths=0.5, label='Uniform (1.6 S $\mathregular{km^{-1}}$)', zorder=4)
 
-    ax1.scatter(range(0, len(e_thresholds)), e_thresholds_realistic-e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='limegreen', linewidths=0.5)
-    ax1.axhline(0, color='black', linestyle='--', zorder=-2)
+    ax1.scatter(range(0, len(e_thresholds)), e_thresholds_realistic-e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='limegreen', linewidths=0.5, zorder=5)
+    ax1.axhline(0, color='black', linestyle='--', zorder=3)
 
-    ax0.set_xlim(-5, len(e_thresholds) + 5)
-    ax1.set_xlim(-5, len(e_thresholds) + 5)
+    ax0.set_xlim(0, len(e_thresholds))
+    ax1.set_xlim(0, len(e_thresholds))
 
     ax0.legend(loc='upper center')
     ax1.set_xlabel('Track circuit number')
-    ax0.set_ylabel('Misoperation E (V $\mathregular{km^{-1}}$)')
-    ax1.set_ylabel('E difference (V $\mathregular{km^{-1}}$)')
+    ax0.set_ylabel('Misoperation E\n(V $\mathregular{km^{-1}}$)', multialignment='center')
+    ax1.set_ylabel('E difference\n(V $\mathregular{km^{-1}}$)', multialignment='center')
     ax0.set_xticks([])
 
-    plt.savefig(f'plots/thresholds_ws_dif_{sec}.pdf')
-    plt.show()
+    ax0.grid(zorder=1, color='black', alpha=0.5, axis='x')
+    ax1.grid(zorder=1, color='black', alpha=0.5, axis='x')
+
+    plt.savefig(f'plots/10. thresholds_ws_dif_{sec}.pdf')
+    #plt.show()
 
 
 def thresholds_rs_solo(sec):
@@ -890,8 +899,8 @@ def compare_rs():
 def compare_rs_vs():
     lines = ['glasgow_edinburgh_falkirk', 'east_coast_main_line', 'west_coast_main_line']
 
-    plt.rcParams['font.size'] = '12'
-    fig = plt.figure(figsize=(12, 8))
+    plt.rcParams['font.size'] = '15'
+    fig = plt.figure(figsize=(10, 8))
     gs = GridSpec(3, 1, hspace=0.2)
     ax0 = fig.add_subplot(gs[0])
     ax1 = fig.add_subplot(gs[1])
@@ -910,7 +919,7 @@ def compare_rs_vs():
         data = np.load(f'data/rail_data/{sec}/{sec}_distances_bearings.npz')
         block_bearings = np.rad2deg(data['bearings'])
         e_values = np.linspace(0, 20, 201)
-        e_all = np.load(f'e_all_bearings_20.npy.npz')
+        e_all = np.load(f'data/bearing_e_fields/e_all_bearings_20.npz')
         ex = e_all['ex'].flatten()
         ey = e_all['ey'].flatten()
         threshold = 0.055
@@ -959,8 +968,8 @@ def compare_rs_vs():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/thresholds_leakage_norm_vs_rs.pdf')
-    #ddplt.show()
+    plt.savefig(f'plots/9. thresholds_leakage_norm_vs_rs.pdf')
+    #plt.show()
 
 
 def min_max_scale(series):
@@ -990,9 +999,9 @@ def map():
     ax.plot(ge_lon, ge_lat, transform=cartopy.crs.PlateCarree(), linewidth=3, color="black", zorder=5)
     ax.plot(ecml_lon, ecml_lat, transform=cartopy.crs.PlateCarree(), linewidth=3, color="black", zorder=5)
     ax.plot(wcml_lon, wcml_lat, transform=cartopy.crs.PlateCarree(), linewidth=3, color="black", zorder=5)
-    _ge, = ax.plot(ge_lon, ge_lat, transform=cartopy.crs.PlateCarree(), color="red", zorder=5)
-    _ecml, = ax.plot(ecml_lon, ecml_lat, transform=cartopy.crs.PlateCarree(), color="gold", zorder=5)
-    _wcml, = ax.plot(wcml_lon, wcml_lat, transform=cartopy.crs.PlateCarree(), color="lime", zorder=5)
+    _ge, = ax.plot(ge_lon, ge_lat, transform=cartopy.crs.PlateCarree(), linestyle=':', color="hotpink", zorder=5)
+    _ecml, = ax.plot(ecml_lon, ecml_lat, transform=cartopy.crs.PlateCarree(), linestyle=':', color="gold", zorder=5)
+    _wcml, = ax.plot(wcml_lon, wcml_lat, transform=cartopy.crs.PlateCarree(), linestyle=':', color="lime", zorder=5)
 
     ax.scatter(-4.25, 55.86, transform=cartopy.crs.PlateCarree(), marker='h', s=30, zorder=6, edgecolors='black', facecolors='white')
     ax.scatter(-3.19, 55.95, transform=cartopy.crs.PlateCarree(), marker='h', s=30, zorder=6, edgecolors='black', facecolors='white')
@@ -1024,16 +1033,14 @@ def map():
     plt.savefig(f'plots/map.pdf')
     plt.show()
 
+
 # mast_resistivity_merged()
 # block_leakage_merged()
 # block_leakage_total_merged()
-# block_leakage_changes_merged()
-# block_leakage_hist_merged()
-# block_leakage_cumulative_hist_merged()
 # block_leakage_cumulative_hist_single_merged()
 # compare_rs()
 # compare_rs_vs()
-map()
+# map()
 
 # for line in ['glasgow_edinburgh_falkirk', 'east_coast_main_line', 'west_coast_main_line']:
 #     currents(line)
