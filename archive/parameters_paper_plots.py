@@ -978,7 +978,7 @@ def rail_impedance_ws(sec):
     e_values = np.linspace(0, 20, 201)
     currents_all_e = np.full((len(bearings), len(block_bearings), len(e_values)), np.nan)
     threshold = 0.081
-    axles = np.load(f'data/axle_positions/glasgow_edinburgh_falkirk_train_end_axles_midpoint_a.npy')
+    axles = np.load(f'../data/axle_positions/glasgow_edinburgh_falkirk_train_end_axles_midpoint_a.npy')
     for a in range(0, 10):
         ax = np.concatenate(axles[a::10])
 

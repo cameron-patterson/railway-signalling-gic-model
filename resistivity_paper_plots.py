@@ -56,8 +56,8 @@ def mast_resistivity_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/1. mast_res_merged.pdf')
-    #plt.show()
+    #plt.savefig(f'plots/1. mast_res_merged.pdf')
+    plt.show()
 
 
 def block_leakage_merged():
@@ -589,6 +589,47 @@ def thresholds_rs_dif(sec):
     # Plot results
     ax0.scatter(range(0, len(e_thresholds_realistic)), e_thresholds_realistic, s=markersize, marker='X', edgecolor='black', facecolor='orangered', linewidths=0.5, label='Realistic', zorder=5)
 
+    output = model(section_name=sec, ex_uniform=ex, ey_uniform=ey, leakage_profile='a20')
+    currents = output['i_relays_a']
+    currents_all_e_20 = np.zeros((72, len(block_bearings), 201))
+    for i_bearing in range(0, len(block_bearings)):
+        currents_all_e_20[:, i_bearing, :] = currents[i_bearing, :].reshape(72, 201)
+    currents_all_e_20 = currents_all_e_20.reshape(72, len(block_bearings), 201)
+
+    misoperations_mask = (currents_all_e_20 < threshold) & (currents_all_e_20 > -threshold)
+    e_first_misoperation_idx = misoperations_mask.argmax(axis=2)
+    has_misoperation_value = misoperations_mask.any(axis=2)
+    e_first_misoperation_idx = np.where(has_misoperation_value, e_first_misoperation_idx, np.inf)
+    first_misoperation_bearing = np.min(e_first_misoperation_idx, axis=0)
+    e_thresholds_realistic_20 = np.full(len(first_misoperation_bearing), np.nan)
+    for i in range(0, len(first_misoperation_bearing)):
+        if first_misoperation_bearing[i] != np.inf:
+            e_thresholds_realistic_20[i] = e_values[int(first_misoperation_bearing[i])]
+        else:
+            pass
+
+    output = model(section_name=sec, ex_uniform=ex, ey_uniform=ey, leakage_profile='a80')
+    currents = output['i_relays_a']
+    currents_all_e_80 = np.zeros((72, len(block_bearings), 201))
+    for i_bearing in range(0, len(block_bearings)):
+        currents_all_e_80[:, i_bearing, :] = currents[i_bearing, :].reshape(72, 201)
+    currents_all_e_80 = currents_all_e_80.reshape(72, len(block_bearings), 201)
+
+    misoperations_mask = (currents_all_e_80 < threshold) & (currents_all_e_80 > -threshold)
+    e_first_misoperation_idx = misoperations_mask.argmax(axis=2)
+    has_misoperation_value = misoperations_mask.any(axis=2)
+    e_first_misoperation_idx = np.where(has_misoperation_value, e_first_misoperation_idx, np.inf)
+    first_misoperation_bearing = np.min(e_first_misoperation_idx, axis=0)
+    e_thresholds_realistic_80 = np.full(len(first_misoperation_bearing), np.nan)
+    for i in range(0, len(first_misoperation_bearing)):
+        if first_misoperation_bearing[i] != np.inf:
+            e_thresholds_realistic_80[i] = e_values[int(first_misoperation_bearing[i])]
+        else:
+            pass
+    # Plot results
+    for k in range(0, len(e_thresholds_realistic)):
+        ax0.plot((k, k), (e_thresholds_realistic_20[k], e_thresholds_realistic_80[k]), linewidth=1, color='orangered', zorder=4)
+
     output = model(section_name=sec, ex_uniform=ex, ey_uniform=ey, y_trac=1.6)
     currents = output['i_relays_a']
     currents_all_e = np.zeros((72, len(block_bearings), 201))
@@ -636,7 +677,7 @@ def thresholds_rs_dif(sec):
     ax2.grid(axis='x', color='black', alpha=0.5, zorder=1)
 
     plt.savefig(f'plots/6. thresholds_rs_dif_{sec}.pdf')
-    plt.show()
+    #plt.show()
 
 
 def thresholds_ws_dif(sec):
@@ -676,7 +717,55 @@ def thresholds_ws_dif(sec):
             pass
     e_thresholds_realistic[np.where(e_thresholds_realistic == 0)] = np.nan
     # Plot results
-    ax0.scatter(range(0, len(e_thresholds_realistic)), e_thresholds_realistic, s=markersize, marker='X', edgecolor='black', facecolor='honeydew', linewidths=0.5, label='Realistic', zorder=5)
+    ax0.scatter(range(0, len(e_thresholds_realistic)), e_thresholds_realistic, s=markersize, marker='X', edgecolor='black', facecolor='limegreen', linewidths=0.5, label='Realistic', zorder=5)
+
+    currents_all_e = np.full((len(bearings), len(block_bearings), len(e_values)), np.nan)
+    for a in range(0, 10):
+        ax = np.concatenate(axles[a::10])
+
+        for i in range(0, len(bearings)):
+            ex_uni = e_values * np.cos(bearings[i])
+            ey_uni = e_values * np.sin(bearings[i])
+            output = model(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, axle_pos_a=ax, leakage_profile='a20')
+            currents_all_e[i, a::10, :] = output['i_relays_a'][a::10, :]
+    misoperations_mask = (currents_all_e > threshold) | (currents_all_e < -threshold)
+    e_first_misoperation_idx = misoperations_mask.argmax(axis=2)
+    has_misoperation_value = misoperations_mask.any(axis=2)
+    e_first_misoperation_idx = np.where(has_misoperation_value, e_first_misoperation_idx, np.inf)
+    first_misoperation_bearing = np.min(e_first_misoperation_idx, axis=0)
+    e_thresholds_realistic_a20 = np.full(len(first_misoperation_bearing), np.nan)
+    for i in range(0, len(first_misoperation_bearing)):
+        if first_misoperation_bearing[i] != np.inf:
+            e_thresholds_realistic_a20[i] = e_values[int(first_misoperation_bearing[i])]
+        else:
+            pass
+    e_thresholds_realistic_a20[np.where(e_thresholds_realistic_a20 == 0)] = np.nan
+
+    currents_all_e = np.full((len(bearings), len(block_bearings), len(e_values)), np.nan)
+    for a in range(0, 10):
+        ax = np.concatenate(axles[a::10])
+
+        for i in range(0, len(bearings)):
+            ex_uni = e_values * np.cos(bearings[i])
+            ey_uni = e_values * np.sin(bearings[i])
+            output = model(section_name=sec, ex_uniform=ex_uni, ey_uniform=ey_uni, axle_pos_a=ax, leakage_profile='a80')
+            currents_all_e[i, a::10, :] = output['i_relays_a'][a::10, :]
+    misoperations_mask = (currents_all_e > threshold) | (currents_all_e < -threshold)
+    e_first_misoperation_idx = misoperations_mask.argmax(axis=2)
+    has_misoperation_value = misoperations_mask.any(axis=2)
+    e_first_misoperation_idx = np.where(has_misoperation_value, e_first_misoperation_idx, np.inf)
+    first_misoperation_bearing = np.min(e_first_misoperation_idx, axis=0)
+    e_thresholds_realistic_a80 = np.full(len(first_misoperation_bearing), np.nan)
+    for i in range(0, len(first_misoperation_bearing)):
+        if first_misoperation_bearing[i] != np.inf:
+            e_thresholds_realistic_a80[i] = e_values[int(first_misoperation_bearing[i])]
+        else:
+            pass
+    e_thresholds_realistic_a80[np.where(e_thresholds_realistic_a80 == 0)] = np.nan
+
+    # Plot results
+    for k in range(0, len(e_thresholds_realistic)):
+        ax0.plot((k, k), (e_thresholds_realistic_a20[k], e_thresholds_realistic_a80[k]), linewidth=1, color='limegreen', zorder=4)
 
     currents_all_e = np.full((len(bearings), len(block_bearings), len(e_values)), np.nan)
     for a in range(0, 10):
@@ -700,9 +789,9 @@ def thresholds_ws_dif(sec):
             pass
     e_thresholds[np.where(e_thresholds == 0)] = np.nan
     # Plot results
-    ax0.scatter(range(0, len(e_thresholds)), e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='limegreen', linewidths=0.5, label='Uniform (1.6 S $\mathregular{km^{-1}}$)', zorder=4)
+    ax0.scatter(range(0, len(e_thresholds)), e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='honeydew', linewidths=0.5, label='Uniform (1.6 S $\mathregular{km^{-1}}$)', zorder=4)
 
-    ax1.scatter(range(0, len(e_thresholds)), e_thresholds_realistic-e_thresholds, s=markersize, marker='X', edgecolor='black', facecolor='limegreen', linewidths=0.5, zorder=5)
+    ax1.scatter(range(0, len(e_thresholds)), e_thresholds_realistic-e_thresholds, s=markersize, marker='o', edgecolor='black', facecolor='limegreen', linewidths=0.5, zorder=5)
     ax1.axhline(0, color='black', linestyle='--', zorder=3)
 
     ax0.set_xlim(0, len(e_thresholds))
@@ -1042,11 +1131,11 @@ def map():
 # compare_rs_vs()
 # map()
 
-# for line in ['glasgow_edinburgh_falkirk', 'east_coast_main_line', 'west_coast_main_line']:
+for line in ['glasgow_edinburgh_falkirk', 'east_coast_main_line', 'west_coast_main_line']:
 #     currents(line)
 #     thresholds_rs(line)
 #     thresholds_ws(line)
-#     thresholds_rs_dif(line)
-#     thresholds_ws_dif(line)
+     thresholds_rs_dif(line)
+     thresholds_ws_dif(line)
 #     thresholds_rs_solo(line)
 #     thresholds_ws_solo(line)
