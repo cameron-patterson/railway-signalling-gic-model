@@ -56,7 +56,7 @@ def mast_resistivity_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    #plt.savefig(f'plots/1. mast_res_merged.pdf')
+    #plt.savefig(f'plots/resistivity_paper/1. mast_res_merged.pdf')
     plt.show()
 
 
@@ -111,7 +111,7 @@ def block_leakage_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/3. block_leak_merged.pdf')
+    plt.savefig(f'plots/resistivity_paper/3. block_leak_merged.pdf')
     #plt.show()
 
 
@@ -174,7 +174,7 @@ def block_leakage_total_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/4. block_leak_total_merged.pdf')
+    plt.savefig(f'plots/resistivity_paper/4. block_leak_total_merged.pdf')
     #plt.show()
 
 
@@ -219,7 +219,7 @@ def block_leakage_changes_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/block_leak_changes_merged.pdf')
+    plt.savefig(f'plots/resistivity_paper/block_leak_changes_merged.pdf')
     #plt.show()
 
 
@@ -260,7 +260,7 @@ def block_leakage_hist_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/block_leak_hist_merged.pdf')
+    plt.savefig(f'plots/resistivity_paper/block_leak_hist_merged.pdf')
     #plt.show()
 
 
@@ -305,7 +305,7 @@ def block_leakage_cumulative_hist_merged():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/block_leak_cumulative_hist_merged.pdf')
+    plt.savefig(f'plots/resistivity_paper/block_leak_cumulative_hist_merged.pdf')
     #plt.show()
 
 
@@ -343,7 +343,7 @@ def block_leakage_cumulative_hist_single_merged():
     ax0.set_ylabel('Cumulative count')
     ax0.legend(loc='upper center', ncols=2)
 
-    plt.savefig(f'plots/5. block_leak_cumulative_hist_single_merged.pdf')
+    plt.savefig(f'plots/resistivity_paper/5. block_leak_cumulative_hist_single_merged.pdf')
     #plt.show()
 
 
@@ -406,7 +406,7 @@ def currents(sec):
     #     ax0.axvline(459, color='black', alpha=0.5)
     #     ax0.axvline(541, color='black', alpha=0.5)
 
-    plt.savefig(f'plots/currents_filled_{sec}.pdf')
+    plt.savefig(f'plots/resistivity_paper/currents_filled_{sec}.pdf')
     #plt.show()
 
 
@@ -478,7 +478,7 @@ def thresholds_rs(sec):
     ax0.set_xlabel('Track circuit number')
     ax0.set_ylabel('Misoperation E (V $\mathregular{km^{-1}}$)')
 
-    plt.savefig(f'plots/thresholds_rs_{sec}.pdf')
+    plt.savefig(f'plots/resistivity_paper/thresholds_rs_{sec}.pdf')
     #plt.show()
 
 
@@ -676,7 +676,7 @@ def thresholds_rs_dif(sec):
     ax1.grid(axis='x', color='black', alpha=0.5, zorder=1)
     ax2.grid(axis='x', color='black', alpha=0.5, zorder=1)
 
-    plt.savefig(f'plots/6. thresholds_rs_dif_{sec}.pdf')
+    plt.savefig(f'plots/resistivity_paper/6. thresholds_rs_dif_{sec}.pdf')
     #plt.show()
 
 
@@ -806,7 +806,7 @@ def thresholds_ws_dif(sec):
     ax0.grid(zorder=1, color='black', alpha=0.5, axis='x')
     ax1.grid(zorder=1, color='black', alpha=0.5, axis='x')
 
-    plt.savefig(f'plots/10. thresholds_ws_dif_{sec}.pdf')
+    plt.savefig(f'plots/resistivity_paper/10. thresholds_ws_dif_{sec}.pdf')
     #plt.show()
 
 
@@ -851,7 +851,7 @@ def thresholds_rs_solo(sec):
     ax0.set_ylabel('Misoperation E (V/km)')
     ax0.set_xlabel('Track circuit number')
 
-    plt.savefig(f'plots/thresholds_rs_solo_{sec}.pdf')
+    plt.savefig(f'plots/resistivity_paper/thresholds_rs_solo_{sec}.pdf')
     #plt.show()
 
 
@@ -896,7 +896,7 @@ def thresholds_ws_solo(sec):
     ax0.set_xlabel('Track circuit number')
     ax0.set_ylabel('Misoperation E (V/km)')
 
-    plt.savefig(f'plots/thresholds_ws_solo_{sec}.pdf')
+    plt.savefig(f'plots/resistivity_paper/thresholds_ws_solo_{sec}.pdf')
     #plt.show()
 
 
@@ -981,7 +981,7 @@ def compare_rs():
     ax1.set_ylabel('Normalised value')
     ax0.legend(loc='upper center')
 
-    plt.savefig(f'plots/thresholds_leakage_norm_rs.pdf')
+    plt.savefig(f'plots/resistivity_paper/thresholds_leakage_norm_rs.pdf')
     #plt.show()
 
 
@@ -1057,7 +1057,7 @@ def compare_rs_vs():
     ax1.legend(loc='upper center')
     ax2.legend(loc='upper center')
 
-    plt.savefig(f'plots/9. thresholds_leakage_norm_vs_rs.pdf')
+    plt.savefig(f'plots/resistivity_paper/9. thresholds_leakage_norm_vs_rs.pdf')
     #plt.show()
 
 
@@ -1119,7 +1119,7 @@ def map():
     ax.set_ylim(0, 1000000)
 
     #ax.coastlines(resolution="10m")
-    plt.savefig(f'plots/map.pdf')
+    plt.savefig(f'plots/resistivity_paper/map.pdf')
     plt.show()
 
 
